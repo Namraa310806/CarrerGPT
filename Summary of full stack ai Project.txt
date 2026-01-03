@@ -1,0 +1,87 @@
+1. Summary of Your Idea (Reframed Clearly)
+
+You want to build a full-stack, production-grade platform for students that includes:
+
+Frontend
+
+React web application
+
+Dashboard for students
+
+Mock interview interface (camera + microphone)
+
+Resume enhancement UI
+
+Roadmap & guidance pages
+
+Interview results visualization
+
+Backend
+
+Django REST API
+
+Endpoints for:
+
+Authentication (AWS Cognito or Django Auth?)
+
+Mock interview workflow
+
+AI question generation
+
+Speech-to-text
+
+Storing interview transcripts
+
+Resume upload + scoring
+
+Recommendations engine
+
+AI + NLP
+
+AI interviewer:
+
+Asks questions verbally (text → speech)
+
+Student answers (speech → text)
+
+NLP evaluation (content quality, fluency, clarity, hesitation)
+
+Camera analysis (optional): Eye contact / attention / confidence
+
+Different interview tracks:
+
+SDE
+
+Data Science
+
+Cloud Engineer
+
+Frontend Dev
+
+Backend Dev
+
+HR round
+
+AWS Infrastructure
+
+S3 → file & video storage
+
+Cognito → authentication
+
+DynamoDB / RDS → user data
+
+Lambda → serverless ML or processing tasks
+
+EC2 / Elastic Beanstalk → backend deployment
+
+Load balancer → handle traffic
+
+CloudFront → hosting React site
+
+Transcribe → speech-to-text
+
+Polly → text-to-speech
+
+Goal
+
+Create a standout full-stack + AI + cloud project that demonstrates end-to-end system design and real-world complexity.

@@ -1,0 +1,192 @@
+Great — since this is a large and multi-featured full-stack project, I’ll break the documentation into structured sections and deliverables. Here’s what I’ll provide step-by-step over the next few messages:
+
+---
+
+## 📚 CareerGPT Full Project Documentation & Architecture
+
+---
+
+### 🔁 1. **High-Level Data Flow (Frontend ⇌ Backend ⇌ DB/API)**
+
+```
+[ User (React.js UI) ]
+        ⇅ (JWT Auth via Axios)
+[ Django REST API ]
+        ⇅
+[ PostgreSQL (User, Resume, Progress, Roadmap...) ]
+        ⇅ (Redis/Celery for async tasks)
+[ External APIs: GitHub | LeetCode | OpenAI ]
+```
+
+---
+
+### 👤 2. **Use Case Diagram**
+
+**Actors:**
+
+* Guest User
+* Authenticated User
+* Admin (optional for analytics or moderation)
+
+**Use Cases:**
+
+```
+Guest User
+ └─ Register/Login
+Authenticated User
+ ├─ Upload Resume → Get Suggestions
+ ├─ View GitHub/LeetCode Analysis
+ ├─ Attempt AI Interview Questions
+ ├─ View Personalized Roadmap
+ ├─ Track Progress (Analytics Dashboard)
+ ├─ Download Resume/Certificate
+ └─ Upgrade to Pro (if available)
+Admin
+ └─ View all user activity (optional)
+```
+
+---
+
+### 🧑‍💻 3. **User Flow Diagram**
+
+```
+[ Login/Register ]
+      ↓
+[ Dashboard ]
+ ├─ Resume Analyzer
+ ├─ GitHub/LeetCode Tracker
+ ├─ Roadmap Page
+ ├─ Interview Practice
+ ├─ Analytics Dashboard
+ └─ Resume Builder / Certificate Generator
+```
+
+---
+
+### 🗃️ 4. **Database Schema (Tables)**
+
+| Table Name         | Key Fields                                                                |
+| ------------------ | ------------------------------------------------------------------------- |
+| `User`             | id, name, email, password, is\_pro\_user, role                            |
+| `ResumeUpload`     | id, user\_id, file\_path, feedback\_json                                  |
+| `CPStats`          | id, user\_id, platform (GitHub/LeetCode), stats\_json                     |
+| `Roadmap`          | id, user\_id, track\_name, roadmap\_json                                  |
+| `InterviewHistory` | id, user\_id, question, user\_response, score                             |
+| `UserProgress`     | id, user\_id, resume\_fixed\_count, cp\_activity\_level, interview\_score |
+| `Certificate`      | id, user\_id, progress\_percent, generated\_pdf\_path                     |
+
+---
+
+### ⚙️ 5. **Backend Logic (Page-wise Function + Django View Design)**
+
+#### 🔐 Auth
+
+* `/api/auth/register/`: Register (POST)
+* `/api/auth/login/`: Login (POST)
+* `/api/auth/user/`: Get current user info (GET)
+
+#### 📄 Resume Analyzer
+
+* `/api/resume/upload/`: Upload Resume (POST)
+* `/api/resume/analyze/`: Return suggestions (GET)
+* Tools: `PyPDF2`, `keyword matching`, JSON-based feedback
+
+#### 🔗 GitHub + LeetCode Tracker
+
+* `/api/github/fetch/`: GitHub repo stats (GET)
+* `/api/leetcode/fetch/`: LeetCode scraper or stats (GET)
+* Save JSON to DB; generate insights (language usage, recent activity)
+
+#### 🤖 Interview Coach
+
+* `/api/interview/question/`: Get next DSA/HR question (GET)
+* `/api/interview/submit/`: Submit response, get manual or GPT score (POST)
+
+#### 🧠 Roadmap Generator
+
+* `/api/roadmap/generate/`: Generate roadmap for selected track (GET)
+* Use static JSON templates for now
+
+#### 📊 Analytics Dashboard
+
+* `/api/progress/`: Return resume fixes, interview scores, CP stats (GET)
+* Plot using Chart.js/Recharts in frontend
+
+#### 📄 Resume/Certificate Builder
+
+* `/api/resume/download/`: Return dynamic resume PDF (GET)
+* `/api/certificate/`: Generate certificate if X% progress reached (GET)
+
+---
+
+### 🖼️ 6. **Frontend Template + Button Mapping**
+
+#### ✅ Dashboard Page
+
+* Buttons:
+
+  * “Upload Resume” → `/resume`
+  * “View GitHub Stats” → `/github`
+  * “Practice Interview” → `/interview`
+  * “Your Roadmap” → `/roadmap`
+  * “Analytics” → `/analytics`
+  * “Resume Builder” → `/resume-builder`
+
+#### 📄 Resume Page
+
+* Upload Button → Calls `POST /api/resume/upload/`
+* Analyze Button → Calls `GET /api/resume/analyze/`
+* Show Suggestions → Map response on UI
+* “Show Rewritten Version” → Dummy improved version
+
+#### 🔗 GitHub/LeetCode Page
+
+* Input username → Fetch stats
+* Show bar/line charts using Recharts
+
+#### 🧠 Roadmap Page
+
+* Choose Track (AI/Web/Backend) → Dropdown
+* Weekly Cards → Resource links + Checkboxes
+* State-based progress tracking
+
+#### 🧾 Resume/Certificate Page
+
+* Form Inputs → Update resume fields
+* “Download Resume” → Triggers `GET /api/resume/download/`
+* “Download Certificate” → Triggers if progress > 80%
+
+---
+
+### 🧱 7. **Architecture Highlights**
+
+| Layer         | Technology            | Purpose                   |
+| ------------- | --------------------- | ------------------------- |
+| Frontend      | React + Tailwind      | UI, State Mgmt            |
+| Backend       | Django REST           | API, Auth, Business Logic |
+| Database      | PostgreSQL            | Data Storage              |
+| Async Queue   | Celery + Redis        | GPT tasks, PDF generation |
+| Deployment    | Railway + Vercel      | Hosting backend/frontend  |
+| External APIs | GitHub, LeetCode, GPT | Integrations              |
+
+---
+
+### 💡 8. **Base Idea Summary**
+
+> CareerGPT is your AI-powered career assistant that analyzes your resume, coding practice (GitHub + CP), and interviews to generate personalized improvement roadmaps. It tracks your growth via analytics and helps you become job-ready with resume building and mock interviews. AI integration enhances feedback, while subscription models allow monetization later.
+
+---
+
+### ✅ Next Steps
+
+Let me know what you want next:
+
+* [ ] ER Diagram (Visual Schema)
+* [ ] Folder-wise backend boilerplate
+* [ ] Frontend component map + routes
+* [ ] Deployment guide
+* [ ] Prompt engineering for GPT tasks
+
+Would you like me to generate a **PDF Documentation** too?
+
+Let’s build this professionally!

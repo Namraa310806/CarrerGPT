@@ -1,0 +1,198 @@
+# 📘 CareerGPT – Full Documentation
+
+---
+
+## 📊 ER Diagram (Entity Relationship Schema)
+
+[User]
+- id (PK)
+- email
+- password
+- is_pro_user (bool)
+- role (user/admin)
+
+[ResumeUpload]
+- id (PK)
+- user_id (FK → User)
+- file_path
+- feedback_json
+- created_at
+
+[CPStats]
+- id (PK)
+- user_id (FK → User)
+- platform (GitHub/LeetCode)
+- stats_json
+- fetched_at
+
+[Roadmap]
+- id (PK)
+- user_id (FK → User)
+- track_name
+- roadmap_json
+- created_at
+
+[InterviewHistory]
+- id (PK)
+- user_id (FK → User)
+- question
+- user_response
+- score
+- feedback
+- attempted_at
+
+[UserProgress]
+- id (PK)
+- user_id (FK → User)
+- resume_fixed_count
+- cp_activity_level
+- interview_score
+- updated_at
+
+[Certificate]
+- id (PK)
+- user_id (FK → User)
+- progress_percent
+- pdf_path
+- issued_on
+
+---
+
+## 🗂️ Folder-wise Backend Boilerplate (Django)
+
+career-gpt/
+├── backend/
+│   ├── core/               # Common utilities
+│   │   ├── models.py       # Abstract base models
+│   │   └── utils.py        # Helpers, PDF, GPT, etc
+│   ├── auth/               # User login, register, JWT
+│   │   ├── views.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   ├── resume/             # Resume upload + feedback
+│   │   ├── views.py
+│   │   ├── models.py
+│   │   ├── urls.py
+│   │   └── utils.py        # PDF parsing, keyword match
+│   ├── roadmap/            # Serve roadmap JSON
+│   │   ├── views.py
+│   │   ├── templates/
+│   ├── interview/          # Interview questions + feedback
+│   │   ├── models.py
+│   │   ├── views.py
+│   ├── github_cp/          # GitHub & LeetCode stats
+│   │   ├── scraper.py
+│   │   ├── views.py
+│   ├── ai/                 # GPT integration (optional)
+│   │   ├── prompts.py
+│   │   ├── gpt_utils.py
+│   ├── media/              # Uploaded files
+│   ├── celery.py
+│   ├── settings.py
+
+---
+
+## 🧩 Frontend Component Map + Routes (React.js)
+
+frontend/
+├── src/
+│   ├── App.jsx
+│   ├── routes.jsx
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   ├── ProtectedRoute.jsx
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── ResumeAnalyzer.jsx
+│   │   ├── GitHubStats.jsx
+│   │   ├── InterviewCoach.jsx
+│   │   ├── Roadmap.jsx
+│   │   ├── Analytics.jsx
+│   │   ├── CertificateBuilder.jsx
+│   ├── services/
+│   │   ├── api.js          # Axios config
+│   │   ├── authService.js
+│   │   ├── resumeService.js
+│   │   ├── githubService.js
+
+### 🔗 Routes
+
+<Route path="/login" element={<Login />} />
+<Route path="/register" element={<Register />} />
+<Route path="/dashboard" element={<Dashboard />} />
+<Route path="/resume" element={<ResumeAnalyzer />} />
+<Route path="/github" element={<GitHubStats />} />
+<Route path="/interview" element={<InterviewCoach />} />
+<Route path="/roadmap" element={<Roadmap />} />
+<Route path="/analytics" element={<Analytics />} />
+<Route path="/certificate" element={<CertificateBuilder />} />
+
+---
+
+## ☁️ Deployment Guide (Render + Vercel)
+
+### ⚙️ Backend (Django) on Render
+
+1. Push backend to GitHub
+2. Create PostgreSQL database in Render
+3. Add secrets in Render dashboard:
+   * DATABASE_URL
+   * SECRET_KEY
+   * OPENAI_API_KEY
+4. Add render.yaml:
+
+services:
+  - type: web
+    name: backend
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn backend.wsgi"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pg-careergpt
+          property: connectionString
+
+5. Enable auto-deploy on push
+
+### 🌐 Frontend (React) on Vercel
+
+1. Push React code to GitHub
+2. Connect GitHub to Vercel
+3. Set environment variables (like API base URL)
+4. Vercel auto-deploys on every push
+
+---
+
+## 🤖 Prompt Engineering for GPT Tasks
+
+### 📄 Resume Analyzer
+
+"Please analyze this resume and provide detailed weaknesses, actionable suggestions, and rewrite weak sections:\n\n{resume_text}"
+
+### 🧠 Interview Feedback
+
+"You are a technical interviewer. Given the user’s response below to the question: '{question}', rate their answer on a scale of 1–10, and give feedback with improvement tips:\n\n{user_response}"
+
+### 📅 Roadmap Generator
+
+"Generate a 6-week learning roadmap for a {goal} career track. The user already knows {skills}. Include weekly topics and suggested resources."
+
+### 🎓 Certificate Generator (Optional)
+
+"Create a professional-sounding certificate citation for a user who completed {track_name} with {percent}% progress."
+
+---
+
+## ✅ Next Suggestions
+
+Let me know if you want:
+
+* Full working Django views per module
+* API contracts (request/response structure)
+* PDF version of this documentation
+* Test cases and CI/CD setup
+
+Let’s move to build mode 🚀 
